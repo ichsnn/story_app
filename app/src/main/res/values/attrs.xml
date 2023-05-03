@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="StoryAppInputText">
+        <attr name="android:inputType" format="integer" />
+        <attr name="helper" format="string" />
+        <attr name="label" format="string" />
+        <attr name="hint" format="string" />
+        <attr name="minLength" format="integer" />
+        <attr name="iconStart" format="reference" />
+        <attr name="required" format="boolean" />
+    </declare-styleable>
+</resources>

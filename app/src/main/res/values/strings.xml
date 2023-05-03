@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Story App</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="input_label">Input Label</string>
+    <string name="login">Login</string>
+    <string name="hint_login_email">Email</string>
+    <string name="hint_login_password">Password</string>
+    <string name="register">Register</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="login_desc">Please Login to continue</string>
+    <string name="bg_vector_shape">Background vector shape</string>
+    <string name="create_account">Create Account</string>
+    <string name="hint_register_name">Name</string>
+    <string name="hint_register_email">Email</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="hint_register_password">Password</string>
+    <string name="back">Back</string>
+    <string name="story_photo">story photo</string>
+    <string name="user_name">Unknown</string>
+    <string name="add_story">Add Story</string>
+    <string name="please_wait">Please Wait…</string>
+</resources>
