@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
-import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -60,8 +59,6 @@ class StoryAppInputText(context: Context, attrs: AttributeSet) : LinearLayout(co
                 recycle()
             }
         }
-
-        Log.d("TAGSTORYAPP", "init $label")
 
         setLabelText(label)
         setHelperText(helper)

@@ -1,9 +1,10 @@
 package com.app.storyapp.ui.main
 
 import android.app.Application
-import android.content.Context
-import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.app.storyapp.data.ResultState
 import com.app.storyapp.data.local.SharedPrefs
 import com.app.storyapp.data.remote.response.ListStoryItem
@@ -37,7 +38,7 @@ class StoryListViewModel(application: Application) : AndroidViewModel(applicatio
                 val storyListResponse = response.listStory
                 _storyList.value = ResultState.Success(storyListResponse)
             } catch (e: HttpException) {
-                if(e.code() == 401) {
+                if (e.code() == 401) {
                     _isLoggedIn.postValue(false)
                 }
             } catch (e: Exception) {

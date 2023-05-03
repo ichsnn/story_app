@@ -1,12 +1,9 @@
 package com.app.storyapp.customviews
 
 import android.content.Context
-import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.text.InputType
 import android.util.AttributeSet
-import android.util.Log
-import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
@@ -75,7 +72,6 @@ class StoryAppInputEditText : AppCompatEditText, View.OnTouchListener {
     }
 
     override fun onTouch(v: View?, event: MotionEvent): Boolean {
-        Log.d("TAGSTORYAPP", "onTouch: ${compoundDrawables[2]}")
         if (compoundDrawables[2] != null) {
             if (inputType == InputType.TYPE_TEXT_VARIATION_PASSWORD + 1 || inputType == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD + 1) {
                 val passwordVisibilityButtonStart: Float
