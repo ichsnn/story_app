@@ -21,7 +21,7 @@
             app:srcCompat="@drawable/bg_vector_shape" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/register_main"
+            android:id="@+id/login_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
@@ -39,24 +39,23 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.app.storyapp.customviews.StoryAppInputText
-                android:id="@+id/ed_login_email"
+                android:id="@+id/ed_register_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:inputType="textEmailAddress"
                 app:hint="@string/hint_register_name"
                 app:iconStart="@drawable/ic_person"
                 app:layout_constraintTop_toBottomOf="@id/tv_create_account" />
 
             <com.app.storyapp.customviews.StoryAppInputText
-                android:id="@+id/ed_login_password"
+                android:id="@+id/ed_register_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:inputType="textEmailAddress"
                 app:hint="@string/hint_register_email"
                 app:iconStart="@drawable/ic_email"
-                app:layout_constraintTop_toBottomOf="@id/ed_login_email" />
+                app:layout_constraintTop_toBottomOf="@id/ed_register_name" />
 
             <com.app.storyapp.customviews.StoryAppInputText
                 android:id="@+id/ed_register_password"
@@ -66,7 +65,7 @@
                 android:inputType="textPassword"
                 app:hint="@string/hint_register_password"
                 app:iconStart="@drawable/ic_key"
-                app:layout_constraintTop_toBottomOf="@id/ed_login_password"
+                app:layout_constraintTop_toBottomOf="@id/ed_register_email"
                 app:minLength="8" />
 
             <com.app.storyapp.customviews.StoryAppInputText
@@ -103,7 +102,7 @@
             android:layout_height="wrap_content"
             android:padding="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/register_main">
+            app:layout_constraintTop_toBottomOf="@+id/login_main">
 
             <TextView
                 android:id="@+id/tv_have_an_account"

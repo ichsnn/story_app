@@ -8,6 +8,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.util.Log
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
@@ -29,6 +30,8 @@ class StoryAppInputText(context: Context, attrs: AttributeSet) : LinearLayout(co
     var labelTextView: TextView
     var helperTextView: TextView
     var inputEditText: StoryAppInputEditText
+
+    private var onTextChangeAddition: OnTextChangeAddition? = null
 
     init {
         orientation = VERTICAL
@@ -86,7 +89,6 @@ class StoryAppInputText(context: Context, attrs: AttributeSet) : LinearLayout(co
     }
 
     fun setHelperText(helper: String?) {
-
         if (helper != null) {
             helperTextView.text = helper
             helperTextView.visibility = View.VISIBLE
@@ -126,25 +128,89 @@ class StoryAppInputText(context: Context, attrs: AttributeSet) : LinearLayout(co
 
                     override fun afterTextChanged(s: Editable?) {
                         if (s.toString().length < minLength) {
-                            setHelperText("$hint must be at least $minLength characters long")
-                            inputEditText.backgroundTintList = ColorStateList.valueOf(Color.RED)
-                            helperTextView.setTextColor(Color.RED)
-                        } else if (s.toString().length < minLength) {
-                            setHelperText(null)
-                            inputEditText.backgroundTintList = editTextBackgroundTint
+                            msgMinLength(hint, minLength)
                         } else
                             if (s.toString().isEmpty()) {
-                                setHelperText("Field cannot be empty")
-                                inputEditText.backgroundTintList = ColorStateList.valueOf(Color.RED)
-                                helperTextView.setTextColor(Color.RED)
+                                msgRequiredField()
                             } else {
-                                setHelperText(null)
-                                inputEditText.backgroundTintList = editTextBackgroundTint
+                                msgHide()
                             }
+                        if (onTextChangeAddition != null) {
+                            onTextChangeAddition?.onTextChange(s)
+                        }
                     }
                 })
             }
         }
+    }
 
+    fun isFieldEmpty(): Boolean {
+        if (text.toString().isEmpty()) {
+            msgRequiredField()
+            return true
+        }
+        msgHide()
+        return false
+    }
+
+    fun isMinLengthNotValid(): Boolean {
+        if (text.toString().length < minLength) {
+            msgMinLength(hint, minLength)
+            return true
+        }
+        msgHide()
+        return false
+    }
+
+    fun isEmailValid(): Boolean {
+        val patterns = Patterns.EMAIL_ADDRESS
+        if(patterns.matcher(text.toString()).matches()) {
+            msgHide()
+            return true
+        }
+        msgEmailNotValid()
+        return false
+    }
+
+    fun msgRequiredField() {
+        setHelperText("Field cannot be empty")
+        warningHelper()
+    }
+
+    fun msgPasswordNotMatch() {
+        setHelperText("Password not match")
+        warningHelper()
+    }
+
+    fun msgEmailNotValid() {
+        setHelperText("Email not valid")
+        warningHelper()
+    }
+
+    fun msgMinLength(hint: String?, minLength: Int) {
+        setHelperText("$hint must be at least $minLength characters long")
+        warningHelper()
+    }
+
+    fun msgHide() {
+        setHelperText(null)
+        normalHelper()
+    }
+
+    fun warningHelper() {
+        inputEditText.backgroundTintList = ColorStateList.valueOf(Color.RED)
+        helperTextView.setTextColor(Color.RED)
+    }
+
+    fun normalHelper() {
+        inputEditText.backgroundTintList = editTextBackgroundTint
+    }
+
+    fun onTextChangeAddition(onTextChangeAddition: OnTextChangeAddition) {
+        this.onTextChangeAddition = onTextChangeAddition
+    }
+
+    interface OnTextChangeAddition {
+        fun onTextChange(s: Editable?)
     }
 }

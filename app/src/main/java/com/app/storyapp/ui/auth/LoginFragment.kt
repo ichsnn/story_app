@@ -1,16 +1,16 @@
 package com.app.storyapp.ui.auth
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
 import com.app.storyapp.R
 import com.app.storyapp.data.ResultState
 import com.app.storyapp.data.dataclass.LoginDao
@@ -40,7 +40,7 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.tvRegister.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_loginFragment_to_registerFragment))
+        binding.tvRegister.setOnClickListener { fragmentToRegister() }
         binding.btnLogin.setOnClickListener { handleBtnLoginClicked() }
 
         setupObserver()
@@ -52,22 +52,14 @@ class LoginFragment : Fragment() {
         _binding = null
     }
 
-    private fun clearInputFocus() {
-        binding.apply {
-            edLoginEmail.inputEditText.clearFocus()
-            edLoginPassword.inputEditText.clearFocus()
-        }
-    }
-
     private fun handleBtnLoginClicked() {
-        clearInputFocus()
+        clearFocus()
         val loginDao = LoginDao()
         binding.apply {
             loginDao.email = edLoginEmail.text.toString()
             loginDao.password = edLoginPassword.text.toString()
         }
         viewModel.login(loginDao)
-        isLoggingIn = true
     }
 
     private fun setupObserver() {
@@ -90,20 +82,25 @@ class LoginFragment : Fragment() {
                 intentToMain()
             }
             is ResultState.Error -> {
-                showError(result.toString())
+                showError(result.error)
                 showLoading(false)
             }
         }
     }
 
     private fun showLoading(isLoading: Boolean) {
-        if(isLoading) loadingDialog.show()
-        else loadingDialog.dismiss()
-        isLoggingIn = false
+        isLoggingIn = if (isLoading) {
+            loadingDialog.show()
+            true
+        } else {
+            loadingDialog.dismiss()
+            false
+        }
     }
 
     private fun showError(message: String) {
-        if(isLoggingIn) Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).show()
+        if (isLoggingIn) Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG)
+            .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).show()
     }
 
     private fun handleSuccess(result: LoginResult) {
@@ -115,6 +112,26 @@ class LoginFragment : Fragment() {
     private fun intentToMain() {
         startActivity(Intent(requireActivity(), MainActivity::class.java))
         requireActivity().finishAffinity()
+    }
+
+    private fun clearFocus() {
+        try {
+            val imm: InputMethodManager =
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun fragmentToRegister() {
+        val registerFragment = RegisterFragment()
+        val fragmentManager = parentFragmentManager
+        fragmentManager.beginTransaction().apply {
+            replace(R.id.frame_container, registerFragment, RegisterFragment::class.java.simpleName)
+            addToBackStack(null)
+            commit()
+        }
     }
 
 }
