@@ -6,9 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.storyapp.data.ResultState
 import com.app.storyapp.data.remote.response.AddNewStoryResponse
-import com.app.storyapp.data.remote.response.ErrorResponse
 import com.app.storyapp.data.remote.retrofit.ApiConfig
-import com.google.gson.Gson
+import com.app.storyapp.utils.createErrorResponse
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -36,8 +35,7 @@ class AddNewStoryViewModel: ViewModel() {
                 val response = ApiConfig.getApiService().addNewStory(fileMultipart, description, "Bearer $token")
                 _addStoryRes.postValue(ResultState.Success(response))
             } catch (e: HttpException) {
-                val errorJSONString = e.response()?.errorBody()?.string()
-                val errorResponse = Gson().fromJson(errorJSONString, ErrorResponse::class.java)
+                val errorResponse = createErrorResponse(e)
                 _addStoryRes.postValue(ResultState.Error(errorResponse.message))
             } catch (e: Exception) {
                 _addStoryRes.postValue(ResultState.Error(e.message.toString()))

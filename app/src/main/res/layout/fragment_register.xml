@@ -6,9 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".ui.auth.RegisterFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/layout_login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layoutDescription="@xml/fragment_register_xml_layout_register_scene">
 
         <ImageView
             android:id="@+id/imageView2"
@@ -18,7 +20,8 @@
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/bg_vector_shape" />
+            app:srcCompat="@drawable/bg_vector_shape"
+            tools:ignore="ImageContrastCheck" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/login_main"
@@ -36,7 +39,9 @@
                 android:textColor="?android:attr/textColorPrimary"
                 android:textSize="36sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="TextContrastCheck"
+                tools:layout_editor_absoluteX="16dp" />
 
             <com.app.storyapp.customviews.StoryAppInputText
                 android:id="@+id/ed_register_name"
@@ -145,6 +150,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="?attr/colorControlNormal" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 
 </ScrollView>

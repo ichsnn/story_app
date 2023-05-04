@@ -26,9 +26,9 @@ class StoryAppInputText(context: Context, attrs: AttributeSet) : LinearLayout(co
 
     val text get() = inputEditText.text
 
-    var labelTextView: TextView
-    var helperTextView: TextView
-    var inputEditText: StoryAppInputEditText
+    private var labelTextView: TextView
+    private var helperTextView: TextView
+    private var inputEditText: StoryAppInputEditText
 
     private var onTextChangeAddition: OnTextChangeAddition? = null
 
@@ -70,7 +70,7 @@ class StoryAppInputText(context: Context, attrs: AttributeSet) : LinearLayout(co
         editTextBackgroundTint = inputEditText.backgroundTintList
     }
 
-    fun setLabelText(label: String?) {
+    private fun setLabelText(label: String?) {
         if (label != null) {
             labelTextView.text = label
             labelTextView.visibility = View.VISIBLE
@@ -79,13 +79,13 @@ class StoryAppInputText(context: Context, attrs: AttributeSet) : LinearLayout(co
         }
     }
 
-    fun setIconStart() {
+    private fun setIconStart() {
         if (iconStart != null) {
             inputEditText.setDrawableStart(iconStart)
         }
     }
 
-    fun setHelperText(helper: String?) {
+    private fun setHelperText(helper: String?) {
         if (helper != null) {
             helperTextView.text = helper
             helperTextView.visibility = View.VISIBLE
@@ -94,15 +94,15 @@ class StoryAppInputText(context: Context, attrs: AttributeSet) : LinearLayout(co
         }
     }
 
-    fun setHintText(hint: String?) {
+    private fun setHintText(hint: String?) {
         inputEditText.hint = hint
     }
 
-    fun setInputType() {
+    private fun setInputType() {
         inputEditText.inputType = inputType
     }
 
-    fun setInputOnChange() {
+    private fun setInputOnChange() {
         inputEditText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 inputEditText.addTextChangedListener(object : TextWatcher {
@@ -179,7 +179,7 @@ class StoryAppInputText(context: Context, attrs: AttributeSet) : LinearLayout(co
         warningHelper()
     }
 
-    fun msgEmailNotValid() {
+    private fun msgEmailNotValid() {
         setHelperText("Email not valid")
         warningHelper()
     }
@@ -194,12 +194,12 @@ class StoryAppInputText(context: Context, attrs: AttributeSet) : LinearLayout(co
         normalHelper()
     }
 
-    fun warningHelper() {
+    private fun warningHelper() {
         inputEditText.backgroundTintList = ColorStateList.valueOf(Color.RED)
         helperTextView.setTextColor(Color.RED)
     }
 
-    fun normalHelper() {
+    private fun normalHelper() {
         inputEditText.backgroundTintList = editTextBackgroundTint
     }
 

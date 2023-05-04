@@ -9,4 +9,5 @@
         <attr name="iconStart" format="reference" />
         <attr name="required" format="boolean" />
     </declare-styleable>
+    <attr name="skeletonColor" format="color" />
 </resources>

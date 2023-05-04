@@ -2,10 +2,7 @@ package com.app.storyapp.data.remote.retrofit
 
 import com.app.storyapp.data.dataclass.LoginDao
 import com.app.storyapp.data.dataclass.RegisterDao
-import com.app.storyapp.data.remote.response.AddNewStoryResponse
-import com.app.storyapp.data.remote.response.LoginResponse
-import com.app.storyapp.data.remote.response.RegisterResponse
-import com.app.storyapp.data.remote.response.StoriesResponse
+import com.app.storyapp.data.remote.response.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*
@@ -31,4 +28,10 @@ interface ApiService {
 
     @GET("stories")
     suspend fun getAllStories(@Header("Authorization") authorization: String): StoriesResponse
+
+    @GET("stories/{id}")
+    suspend fun getStoryDetail(
+        @Path("id") id: String,
+        @Header("Authorization") authorization: String
+    ): StoryDetailResponse
 }

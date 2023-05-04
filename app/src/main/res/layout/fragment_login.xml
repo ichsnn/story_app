@@ -6,9 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".ui.auth.LoginFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/layout_login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layoutDescription="@xml/fragment_login_xml_layout_login_scene">
 
         <ImageView
             android:id="@+id/imageView2"
@@ -121,7 +123,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 
 
 </ScrollView>

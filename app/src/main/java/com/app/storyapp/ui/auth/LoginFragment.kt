@@ -55,11 +55,16 @@ class LoginFragment : Fragment() {
     private fun handleBtnLoginClicked() {
         clearFocus()
         val loginDao = LoginDao()
+        val isValid: Boolean
         binding.apply {
+            isValid =
+                !edLoginEmail.isFieldEmpty() && edLoginEmail.isEmailValid() && !edLoginPassword.isFieldEmpty() && !edLoginPassword.isMinLengthNotValid()
             loginDao.email = edLoginEmail.text.toString()
             loginDao.password = edLoginPassword.text.toString()
         }
-        viewModel.login(loginDao)
+        if (isValid) {
+            viewModel.login(loginDao)
+        }
     }
 
     private fun setupObserver() {

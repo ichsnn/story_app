@@ -1,8 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.storydetail.StoryDetailActivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp">
+
+            <ImageView
+                android:id="@+id/story_photo"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/story_photo"
+                android:scaleType="centerCrop"
+                android:transitionName="storyPhoto"
+                app:layout_constraintDimensionRatio="H, 1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ImageContrastCheck" />
+
+            <TextView
+                android:id="@+id/tv_story_user"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/user_name"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:transitionName="userName"
+                app:layout_constraintEnd_toEndOf="@+id/story_photo"
+                app:layout_constraintStart_toStartOf="@+id/story_photo"
+                app:layout_constraintTop_toBottomOf="@+id/story_photo" />
+
+            <TextView
+                android:id="@+id/tv_story_desc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/story_description"
+                android:textColor="?android:attr/textColorPrimary"
+                android:transitionName="description"
+                app:layout_constraintEnd_toEndOf="@+id/tv_story_user"
+                app:layout_constraintStart_toStartOf="@+id/tv_story_user"
+                app:layout_constraintTop_toBottomOf="@+id/tv_story_user" />
+
+            <TextView
+                android:id="@+id/tv_story_created"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/created_on"
+                android:textSize="12sp"
+                android:transitionName="createdOn"
+                app:layout_constraintEnd_toEndOf="@+id/tv_story_desc"
+                app:layout_constraintStart_toStartOf="@+id/tv_story_desc"
+                app:layout_constraintTop_toBottomOf="@+id/tv_story_desc" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <include layout="@layout/skeleton_story_detail" android:id="@+id/skeleton" />
 </androidx.constraintlayout.widget.ConstraintLayout>

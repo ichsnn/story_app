@@ -12,19 +12,21 @@
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.motion.widget.MotionLayout
+            android:id="@+id/layout_success_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="400dp">
+            android:minHeight="600dp"
+            app:layoutDescription="@xml/activity_success_xml_layout_success_message_scene">
 
             <ImageView
-                android:contentDescription="@string/success"
                 android:id="@+id/iv_icon"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="64dp"
                 android:layout_marginBottom="24dp"
                 android:adjustViewBounds="true"
+                android:contentDescription="@string/success"
                 app:layout_constraintBottom_toTopOf="@+id/tv_message"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -40,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/success"
                 android:textAlignment="center"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -50,7 +52,7 @@
                 app:layout_constraintVertical_bias="0.5" />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.motion.widget.MotionLayout>
 
     </ScrollView>
 
