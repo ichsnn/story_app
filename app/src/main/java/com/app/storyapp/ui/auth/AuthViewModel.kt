@@ -44,7 +44,6 @@ class AuthViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val response = ApiConfig.getApiService().register(registerDao)
-                if (response.error == true) throw Exception(response.message)
                 _registerRes.postValue(ResultState.Success(response))
             } catch (e: HttpException) {
                 val errorJSONString = e.response()?.errorBody()?.string()

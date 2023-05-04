@@ -14,6 +14,7 @@ import com.app.storyapp.data.ResultState
 import com.app.storyapp.data.local.SharedPrefs
 import com.app.storyapp.data.remote.response.ListStoryItem
 import com.app.storyapp.databinding.ActivityMainBinding
+import com.app.storyapp.ui.addstory.AddNewStoryActivity
 import com.app.storyapp.ui.auth.AuthActivity
 
 class MainActivity : AppCompatActivity() {
@@ -28,6 +29,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         sharedPrefs = SharedPrefs(this)
+
+        binding.btnAddStory.setOnClickListener { intentMainToAddStory() }
 
         setupObserver()
     }
@@ -62,6 +65,10 @@ class MainActivity : AppCompatActivity() {
     private fun intentMainToLogin() {
         startActivity(Intent(this@MainActivity, AuthActivity::class.java))
         finishAffinity()
+    }
+
+    private fun intentMainToAddStory() {
+        startActivity(Intent(this@MainActivity, AddNewStoryActivity::class.java))
     }
 
     private fun handlerStoryList(result: ResultState<List<ListStoryItem>>) {

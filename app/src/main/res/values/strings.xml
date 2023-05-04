@@ -21,4 +21,17 @@
     <string name="add_story">Add Story</string>
     <string name="please_wait">Please Wait…</string>
     <string name="logout">Logout</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="describe_your_story_with_this_photo">Describe your story with this photo</string>
+    <string name="upload">Upload</string>
+    <string name="field_cannot_be_empty">Field cannot be empty</string>
+    <string name="photo_cannot_be_empty">Photo cannot be empty</string>
+    <string name="unauthorized">Unauthorized</string>
+    <string name="success">Success</string>
+    <string name="choose_a_photo">Choose a Photo</string>
+    <string name="language">Language</string>
+    <string name="home">Home</string>
+    <string name="story_description">Story Description</string>
+    <string name="created_on">Created On</string>
 </resources>
