@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Story App</string>
+    <string name="hello_blank_fragment">Hallo fragment kosong</string>
+    <string name="input_label">Label Masukan</string>
+    <string name="login">Masuk</string>
+    <string name="hint_login_email">Email</string>
+    <string name="hint_login_password">Kata Sandi</string>
+    <string name="register">Daftar</string>
+    <string name="don_t_have_an_account">Tidak punya akun?</string>
+    <string name="login_desc">Silahkan Masuk untuk melanjutkan</string>
+    <string name="bg_vector_shape">Latar Belakang Bentuk Vector</string>
+    <string name="create_account">Buat Akun</string>
+    <string name="hint_register_name">Nama</string>
+    <string name="hint_register_email">Email</string>
+    <string name="already_have_an_account">Sudah punya akun?</string>
+    <string name="hint_register_password">Kata Sandi</string>
+    <string name="back">Kembali</string>
+    <string name="story_photo">Cerita Photo</string>
+    <string name="user_name">Tidak Diketahui</string>
+    <string name="add_story">Tambah Cerita</string>
+    <string name="please_wait">Harap Tunggu…</string>
+    <string name="logout">Keluar</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+    <string name="describe_your_story_with_this_photo">Ceritakan cerita anda tentang foto ini</string>
+    <string name="upload">Unggah</string>
+    <string name="field_cannot_be_empty">Masukan tidak boleh kosong</string>
+    <string name="photo_cannot_be_empty">Foto tidak boleh kosong</string>
+    <string name="unauthorized">Unauthorized</string>
+    <string name="success">Berhasil</string>
+    <string name="choose_a_photo">Pilih Foto</string>
+    <string name="home">Beranda</string>
+    <string name="story_description">Deskripsi Cerita</string>
+    <string name="created_on">Dibuat Pada</string>
+</resources>

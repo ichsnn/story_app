@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Story App</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="input_label">Input Label</string>
     <string name="login">Login</string>
@@ -30,7 +29,6 @@
     <string name="unauthorized">Unauthorized</string>
     <string name="success">Success</string>
     <string name="choose_a_photo">Choose a Photo</string>
-    <string name="language">Language</string>
     <string name="home">Home</string>
     <string name="story_description">Story Description</string>
     <string name="created_on">Created On</string>
