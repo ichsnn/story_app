@@ -5,13 +5,13 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.text.Editable
-import android.text.TextWatcher
 import android.util.AttributeSet
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.widget.doAfterTextChanged
 import com.app.storyapp.R
 
 class StoryAppInputText(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
@@ -105,38 +105,19 @@ class StoryAppInputText(context: Context, attrs: AttributeSet) : LinearLayout(co
     private fun setInputOnChange() {
         inputEditText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                inputEditText.addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        count: Int,
-                        after: Int
-                    ) {
-
-                    }
-
-                    override fun onTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        before: Int,
-                        count: Int
-                    ) {
-                    }
-
-                    override fun afterTextChanged(s: Editable?) {
-                        if (s.toString().length < minLength) {
-                            msgMinLength(hint, minLength)
-                        } else
-                            if (s.toString().isEmpty()) {
-                                msgRequiredField()
-                            } else {
-                                msgHide()
-                            }
-                        if (onTextChangeAddition != null) {
-                            onTextChangeAddition?.onTextChange(s)
+                inputEditText.doAfterTextChanged { s ->
+                    if (s.toString().length < minLength) {
+                        msgMinLength(hint, minLength)
+                    } else
+                        if (s.toString().isEmpty()) {
+                            msgRequiredField()
+                        } else {
+                            msgHide()
                         }
+                    if (onTextChangeAddition != null) {
+                        onTextChangeAddition?.onTextChange(s)
                     }
-                })
+                }
             }
         }
     }
@@ -161,7 +142,7 @@ class StoryAppInputText(context: Context, attrs: AttributeSet) : LinearLayout(co
 
     fun isEmailValid(): Boolean {
         val patterns = Patterns.EMAIL_ADDRESS
-        if(patterns.matcher(text.toString()).matches()) {
+        if (patterns.matcher(text.toString()).matches()) {
             msgHide()
             return true
         }
@@ -170,22 +151,26 @@ class StoryAppInputText(context: Context, attrs: AttributeSet) : LinearLayout(co
     }
 
     fun msgRequiredField() {
-        setHelperText("Field cannot be empty")
+        val message = context.getString(R.string.field_cannot_be_empty)
+        setHelperText(message)
         warningHelper()
     }
 
     fun msgPasswordNotMatch() {
-        setHelperText("Password not match")
+        val message = context.getString(R.string.password_not_match)
+        setHelperText(message)
         warningHelper()
     }
 
     private fun msgEmailNotValid() {
-        setHelperText("Email not valid")
+        val message = context.getString(R.string.email_not_valid)
+        setHelperText(message)
         warningHelper()
     }
 
     fun msgMinLength(hint: String?, minLength: Int) {
-        setHelperText("$hint must be at least $minLength characters long")
+        val stringTemplate = context.getString(R.string.field_min_length, hint, minLength)
+        setHelperText(stringTemplate)
         warningHelper()
     }
 

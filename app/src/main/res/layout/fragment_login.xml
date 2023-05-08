@@ -67,7 +67,8 @@
                 android:inputType="textPassword"
                 app:hint="@string/hint_login_password"
                 app:iconStart="@drawable/ic_key"
-                app:layout_constraintTop_toBottomOf="@id/ed_login_email" />
+                app:layout_constraintTop_toBottomOf="@id/ed_login_email"
+                app:minLength="8" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_login"

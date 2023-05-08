@@ -32,4 +32,7 @@
     <string name="home">Home</string>
     <string name="story_description">Story Description</string>
     <string name="created_on">Created On</string>
+    <string name="field_min_length">%s must be at least %d characters long</string>
+    <string name="email_not_valid">Email not valid</string>
+    <string name="password_not_match">Password not match</string>
 </resources>
