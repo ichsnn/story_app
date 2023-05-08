@@ -34,4 +34,7 @@ interface ApiService {
         @Path("id") id: String,
         @Header("Authorization") authorization: String
     ): StoryDetailResponse
+
+    @GET("stories?location=1")
+    suspend fun getMapStories(@Header("Authorization") authorization: String): StoriesResponse
 }

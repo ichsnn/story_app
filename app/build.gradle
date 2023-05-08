@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -41,7 +42,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.15.1'
     implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
@@ -54,4 +55,10 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:1.5.7"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1" //viewModelScope
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1" //liveData
+    // google map
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    // google map cluster marker
+    implementation 'com.google.maps.android:android-maps-utils:2.3.0'
+    // paging 3
+    implementation "androidx.paging:paging-runtime-ktx:3.1.1"
 }

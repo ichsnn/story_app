@@ -35,4 +35,6 @@
     <string name="field_min_length">%s must be at least %d characters long</string>
     <string name="email_not_valid">Email not valid</string>
     <string name="password_not_match">Password not match</string>
+    <string name="title_activity_stories_map">Map Stories</string>
+    <string name="address">address</string>
 </resources>

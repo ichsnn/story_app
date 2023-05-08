@@ -16,6 +16,7 @@ import com.app.storyapp.data.remote.response.ListStoryItem
 import com.app.storyapp.databinding.ActivityMainBinding
 import com.app.storyapp.ui.addstory.AddNewStoryActivity
 import com.app.storyapp.ui.auth.AuthActivity
+import com.app.storyapp.ui.mapstories.MapStoriesActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         sharedPrefs = SharedPrefs(this)
 
         binding.btnAddStory.setOnClickListener { intentMainToAddStory() }
+        binding.btnMaps.setOnClickListener { intentMainToMapStories() }
 
         setupObserver()
     }
@@ -71,15 +73,21 @@ class MainActivity : AppCompatActivity() {
         startActivity(Intent(this@MainActivity, AddNewStoryActivity::class.java))
     }
 
+    private fun intentMainToMapStories() {
+        startActivity(Intent(this@MainActivity, MapStoriesActivity::class.java))
+    }
+
     private fun handlerStoryList(result: ResultState<List<ListStoryItem>>) {
         when (result) {
             is ResultState.Loading -> {
                 showLoadingIndicator(true)
             }
+
             is ResultState.Success -> {
                 showLoadingIndicator(false)
                 setStoryList(result.data)
             }
+
             is ResultState.Error -> {
                 showLoadingIndicator(false)
                 showError(result.error)
