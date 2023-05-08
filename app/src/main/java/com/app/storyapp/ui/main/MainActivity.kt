@@ -5,14 +5,14 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.storyapp.R
-import com.app.storyapp.data.ResultState
+import com.app.storyapp.adapter.LoadingStateAdapter
+import com.app.storyapp.adapter.StoriesAdapter
 import com.app.storyapp.data.local.SharedPrefs
-import com.app.storyapp.data.remote.response.ListStoryItem
 import com.app.storyapp.databinding.ActivityMainBinding
 import com.app.storyapp.ui.addstory.AddNewStoryActivity
 import com.app.storyapp.ui.auth.AuthActivity
@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         binding.btnMaps.setOnClickListener { intentMainToMapStories() }
 
         setupObserver()
+        getStories()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -55,9 +56,6 @@ class MainActivity : AppCompatActivity() {
         viewModel.isLoggedIn.observe(this) {
             handleLogin(it)
         }
-        viewModel.storyList.observe(this) {
-            handlerStoryList(it)
-        }
     }
 
     private fun handleLogin(isLoggedIn: Boolean) {
@@ -77,43 +75,69 @@ class MainActivity : AppCompatActivity() {
         startActivity(Intent(this@MainActivity, MapStoriesActivity::class.java))
     }
 
-    private fun handlerStoryList(result: ResultState<List<ListStoryItem>>) {
-        when (result) {
-            is ResultState.Loading -> {
-                showLoadingIndicator(true)
-            }
-
-            is ResultState.Success -> {
-                showLoadingIndicator(false)
-                setStoryList(result.data)
-            }
-
-            is ResultState.Error -> {
-                showLoadingIndicator(false)
-                showError(result.error)
-            }
-        }
-    }
-
     private fun handleLogout() {
         sharedPrefs.removeUser()
         intentMainToLogin()
     }
 
     private fun showLoadingIndicator(isLoading: Boolean) {
-        binding.loadingIndicator.apply {
-            visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.pagingLoadingItem.progressBarPaging.apply {
+            visibility = createVisibility(isLoading)
+        }
+        showError()
+        binding.pagingLoadingItem.btnRetry.visibility = createVisibility(false)
+    }
+
+    private fun createVisibility(state: Boolean): Int = if (state) View.VISIBLE else View.GONE
+
+    private fun showError(message: String? = null) {
+        binding.pagingLoadingItem.errorMsg.apply {
+            text = message
+            visibility = createVisibility(true)
         }
     }
 
-    private fun showError(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    private fun showPagingLoadingItemVisibility(state: Boolean) {
+        binding.pagingLoadingItemContainer.visibility = createVisibility(state)
     }
 
-    private fun setStoryList(storyList: List<ListStoryItem>) {
-        val rv = binding.rvStoryList
-        val storyListAdapter = StoryListAdapter(storyList)
-        rv.layoutManager = LinearLayoutManager(this)
-        rv.adapter = storyListAdapter
+    private fun setRetry(retry: () -> Unit) {
+        binding.pagingLoadingItem.btnRetry.apply {
+            visibility = createVisibility(true)
+            setOnClickListener { retry.invoke() }
+        }
+    }
+
+    private fun getStories() {
+        val adapter = StoriesAdapter()
+        binding.rvStoryList.adapter = adapter.withLoadStateFooter(
+            footer = LoadingStateAdapter {
+                adapter.retry()
+            }
+        )
+        adapter.addLoadStateListener { loadStates ->
+            when (loadStates.refresh) {
+                is LoadState.Loading -> {
+                    showPagingLoadingItemVisibility(true)
+                    showLoadingIndicator(true)
+                }
+
+                is LoadState.Error -> {
+                    showPagingLoadingItemVisibility(true)
+                    showLoadingIndicator(false)
+                    val errorState = loadStates.refresh as LoadState.Error
+                    showError(errorState.error.localizedMessage as String)
+                    setRetry { adapter.retry() }
+                }
+
+                is LoadState.NotLoading -> {
+                    showPagingLoadingItemVisibility(false)
+                }
+            }
+        }
+        binding.rvStoryList.layoutManager = LinearLayoutManager(this)
+        viewModel.getStories()?.observe(this) {
+            adapter.submitData(lifecycle, it)
+        }
     }
 }

@@ -36,4 +36,7 @@
     <string name="email_not_valid">Email tidak valid</string>
     <string name="password_not_match">Password tidak cocok</string>
     <string name="title_activity_stories_map">Map Stories</string>
+    <string name="address">alamat</string>
+    <string name="retry">coba lagi</string>
+    <string name="timeout">Waktu habis</string>
 </resources>

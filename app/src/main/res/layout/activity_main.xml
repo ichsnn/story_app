@@ -15,33 +15,42 @@
         tools:listitem="@layout/story_item" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:contentDescription="@string/add_story"
         android:id="@+id/btn_maps"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:contentDescription="@string/add_story"
         android:src="@drawable/ic_map"
-        android:layout_height="wrap_content" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:contentDescription="@string/add_story"
         android:id="@+id/btn_add_story"
         android:layout_width="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_constraintBottom_toTopOf="@id/btn_maps"
-        app:layout_constraintRight_toRightOf="parent"
-        android:src="@drawable/ic_add"
-        android:layout_height="wrap_content" />
-
-
-    <ProgressBar
-        android:id="@+id/loading_indicator"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_margin="16dp"
+        android:contentDescription="@string/add_story"
+        android:src="@drawable/ic_add"
+        app:layout_constraintBottom_toTopOf="@id/btn_maps"
+        app:layout_constraintRight_toRightOf="parent" />
 
+
+    <!--<ProgressBar-->
+    <!--    android:id="@+id/loading_indicator"-->
+    <!--    android:layout_width="wrap_content"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--    app:layout_constraintEnd_toEndOf="parent"-->
+    <!--    app:layout_constraintStart_toStartOf="parent"-->
+    <!--    app:layout_constraintTop_toTopOf="parent" />-->
+
+    <FrameLayout
+        android:id="@+id/paging_loading_item_container"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <include layout="@layout/paging_loading_item" android:id="@+id/paging_loading_item" />
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

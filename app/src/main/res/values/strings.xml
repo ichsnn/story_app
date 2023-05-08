@@ -37,4 +37,6 @@
     <string name="password_not_match">Password not match</string>
     <string name="title_activity_stories_map">Map Stories</string>
     <string name="address">address</string>
+    <string name="retry">retry</string>
+    <string name="timeout">Timeout</string>
 </resources>

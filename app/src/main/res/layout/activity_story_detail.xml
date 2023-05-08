@@ -27,6 +27,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@drawable/ic_photo"
                 tools:ignore="ImageContrastCheck" />
 
             <TextView
@@ -36,7 +37,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:text="@string/user_name"
+                tools:text="@string/user_name"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -50,7 +51,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="@string/story_description"
+                tools:text="@string/story_description"
                 android:textColor="?android:attr/textColorPrimary"
                 android:transitionName="description"
                 app:layout_constraintEnd_toEndOf="@+id/tv_story_user"
@@ -62,7 +63,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="@string/created_on"
+                tools:text="@string/created_on"
                 android:textSize="12sp"
                 android:transitionName="createdOn"
                 app:layout_constraintEnd_toEndOf="@+id/tv_story_desc"
@@ -72,5 +73,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-    <include layout="@layout/skeleton_story_detail" android:id="@+id/skeleton" />
+    <include layout="@layout/skeleton_story_detail" android:id="@+id/skeleton" android:visibility="gone" />
 </androidx.constraintlayout.widget.ConstraintLayout>

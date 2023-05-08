@@ -27,7 +27,12 @@ interface ApiService {
     ): AddNewStoryResponse
 
     @GET("stories")
-    suspend fun getAllStories(@Header("Authorization") authorization: String): StoriesResponse
+    suspend fun getAllStories(
+        @Header("Authorization") authorization: String,
+        @Query("page") page: Int? = null,
+        @Query("size") size: Int? = null,
+        @Query("location") location: Int = 0
+    ): StoriesResponse
 
     @GET("stories/{id}")
     suspend fun getStoryDetail(
