@@ -168,7 +168,7 @@ class StoryAppInputText(context: Context, attrs: AttributeSet) : LinearLayout(co
         warningHelper()
     }
 
-    fun msgMinLength(hint: String?, minLength: Int) {
+    private fun msgMinLength(hint: String?, minLength: Int) {
         val stringTemplate = context.getString(R.string.field_min_length, hint, minLength)
         setHelperText(stringTemplate)
         warningHelper()

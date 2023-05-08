@@ -30,12 +30,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         sharedPrefs = SharedPrefs(this)
+        val token = sharedPrefs.getUser().token
+        if(token.isNullOrBlank()) {
+            intentMainToLogin()
+        }
 
         binding.btnAddStory.setOnClickListener { intentMainToAddStory() }
         binding.btnMaps.setOnClickListener { intentMainToMapStories() }
 
-        setupObserver()
-        getStories()
+        getStories(token as String)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -50,16 +53,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun setupObserver() {
-        viewModel.isLoggedIn.observe(this) {
-            handleLogin(it)
-        }
-    }
-
-    private fun handleLogin(isLoggedIn: Boolean) {
-        if (!isLoggedIn) intentMainToLogin()
     }
 
     private fun intentMainToLogin() {
@@ -108,7 +101,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getStories() {
+    private fun getStories(token: String) {
         val adapter = StoriesAdapter()
         binding.rvStoryList.adapter = adapter.withLoadStateFooter(
             footer = LoadingStateAdapter {
@@ -136,7 +129,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.rvStoryList.layoutManager = LinearLayoutManager(this)
-        viewModel.getStories()?.observe(this) {
+        viewModel.getStories(token).observe(this) {
             adapter.submitData(lifecycle, it)
         }
     }
