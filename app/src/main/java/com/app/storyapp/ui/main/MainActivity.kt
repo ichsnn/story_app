@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.paging.LoadState
@@ -14,6 +15,7 @@ import com.app.storyapp.adapter.LoadingStateAdapter
 import com.app.storyapp.adapter.StoriesAdapter
 import com.app.storyapp.data.local.SharedPrefs
 import com.app.storyapp.databinding.ActivityMainBinding
+import com.app.storyapp.exception.UnauthorizedTokenException
 import com.app.storyapp.ui.addstory.AddNewStoryActivity
 import com.app.storyapp.ui.auth.AuthActivity
 import com.app.storyapp.ui.mapstories.MapStoriesActivity
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity() {
 
         sharedPrefs = SharedPrefs(this)
         val token = sharedPrefs.getUser().token
+
         if(token.isNullOrBlank()) {
             intentMainToLogin()
         }
@@ -114,15 +117,18 @@ class MainActivity : AppCompatActivity() {
                     showPagingLoadingItemVisibility(true)
                     showLoadingIndicator(true)
                 }
-
                 is LoadState.Error -> {
-                    showPagingLoadingItemVisibility(true)
-                    showLoadingIndicator(false)
                     val errorState = loadStates.refresh as LoadState.Error
-                    showError(errorState.error.localizedMessage as String)
-                    setRetry { adapter.retry() }
+                    if (errorState.error is UnauthorizedTokenException) {
+                        handleLogout()
+                        Toast.makeText(this, errorState.error.localizedMessage, Toast.LENGTH_SHORT).show()
+                    } else {
+                        showPagingLoadingItemVisibility(true)
+                        showLoadingIndicator(false)
+                        showError(errorState.error.localizedMessage as String)
+                        setRetry { adapter.retry() }
+                    }
                 }
-
                 is LoadState.NotLoading -> {
                     showPagingLoadingItemVisibility(false)
                 }

@@ -14,6 +14,7 @@ import com.app.storyapp.data.remote.retrofit.ApiConfig
 import com.app.storyapp.services.StoryPagingSource
 
 class StoryListViewModel(application: Application) : AndroidViewModel(application) {
+
     fun getStories(token: String): LiveData<PagingData<ListStoryItem>> {
         val pager = Pager(
             config = PagingConfig(pageSize = 10),

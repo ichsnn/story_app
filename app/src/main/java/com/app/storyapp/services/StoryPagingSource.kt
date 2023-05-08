@@ -4,6 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.app.storyapp.data.remote.response.ListStoryItem
 import com.app.storyapp.data.remote.retrofit.ApiService
+import com.app.storyapp.exception.UnauthorizedTokenException
 import com.app.storyapp.utils.createErrorResponse
 import retrofit2.HttpException
 
@@ -28,6 +29,9 @@ class StoryPagingSource(private val apiService: ApiService, private val token: S
                 nextKey = if (responseData.listStory.isEmpty()) null else position + 1
             )
         } catch (e: HttpException) {
+            if(e.code() == 401) {
+                return LoadResult.Error(UnauthorizedTokenException(e.code()))
+            }
             val errorResponse = createErrorResponse(e)
             val error = Error(errorResponse.message)
             LoadResult.Error(error)
