@@ -39,4 +39,6 @@
     <string name="address">address</string>
     <string name="retry">retry</string>
     <string name="timeout">Timeout</string>
+    <string name="offline">Offline</string>
+    <string name="reload">Reload</string>
 </resources>

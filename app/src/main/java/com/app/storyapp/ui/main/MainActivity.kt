@@ -79,30 +79,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showLoadingIndicator(isLoading: Boolean) {
-        binding.pagingLoadingItem.progressBarPaging.apply {
-            visibility = createVisibility(isLoading)
-        }
-        showError()
-        binding.pagingLoadingItem.btnRetry.visibility = createVisibility(false)
+        binding.storyListLoading.visibility = createVisibility(isLoading)
     }
 
     private fun createVisibility(state: Boolean): Int = if (state) View.VISIBLE else View.GONE
 
     private fun showError(message: String? = null) {
-        binding.pagingLoadingItem.errorMsg.apply {
-            text = message
-            visibility = createVisibility(true)
-        }
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun showPagingLoadingItemVisibility(state: Boolean) {
-        binding.pagingLoadingItemContainer.visibility = createVisibility(state)
-    }
-
-    private fun setRetry(retry: () -> Unit) {
-        binding.pagingLoadingItem.btnRetry.apply {
-            visibility = createVisibility(true)
-            setOnClickListener { retry.invoke() }
+    private fun setReloadButton(state: Boolean, retry: (() -> Unit)? = null) {
+        binding.btnReload.apply {
+            visibility = createVisibility(state)
+            setOnClickListener { retry?.invoke() }
         }
     }
 
@@ -116,26 +105,25 @@ class MainActivity : AppCompatActivity() {
         adapter.addLoadStateListener { loadStates ->
             when (loadStates.refresh) {
                 is LoadState.Loading -> {
-                    showPagingLoadingItemVisibility(true)
                     showLoadingIndicator(true)
+                    setReloadButton(false)
                 }
 
                 is LoadState.Error -> {
                     val errorState = loadStates.refresh as LoadState.Error
                     if (errorState.error is UnauthorizedTokenException) {
                         handleLogout()
-                        Toast.makeText(this, errorState.error.localizedMessage, Toast.LENGTH_SHORT)
-                            .show()
+                        showError(errorState.error.localizedMessage as String)
                     } else {
-                        showPagingLoadingItemVisibility(true)
                         showLoadingIndicator(false)
                         showError(errorState.error.localizedMessage as String)
-                        setRetry { adapter.retry() }
+                        setReloadButton(true) { adapter.retry() }
                     }
                 }
 
                 is LoadState.NotLoading -> {
-                    showPagingLoadingItemVisibility(false)
+                    showLoadingIndicator(false)
+                    setReloadButton(false)
                 }
             }
         }

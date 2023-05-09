@@ -9,6 +9,8 @@ import com.app.storyapp.data.local.StoryDatabase
 import com.app.storyapp.data.local.entity.StoryRemoteKey
 import com.app.storyapp.data.remote.response.ListStoryItem
 import com.app.storyapp.data.remote.retrofit.ApiService
+import com.app.storyapp.exception.UnauthorizedTokenException
+import retrofit2.HttpException
 
 @OptIn(ExperimentalPagingApi::class)
 class StoryRemoteMediator(
@@ -67,6 +69,9 @@ class StoryRemoteMediator(
             }
 
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
+        } catch (e: HttpException) {
+            val newError: Throwable = if (e.code() == 401) UnauthorizedTokenException(401) else e
+            return MediatorResult.Error(newError)
         } catch (e: Exception) {
             return MediatorResult.Error(e)
         }

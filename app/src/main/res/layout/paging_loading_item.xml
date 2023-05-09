@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="8dp"
     android:orientation="vertical">
 
@@ -20,10 +21,12 @@
         android:textAlignment="center"
         android:textColor="?android:textColorPrimary" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
+        app:cornerRadius="99dp"
         android:id="@+id/btn_retry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        app:icon="@drawable/ic_retry"
         android:text="@string/retry" />
 </LinearLayout>
