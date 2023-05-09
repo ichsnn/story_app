@@ -14,6 +14,7 @@
         <!-- Customize your theme here. -->
         <item name="skeletonColor">@color/light_gray_2</item>
         <item name="colorPrimary80">@color/purple_200_80</item>
+
         <item name="switchStyle">@style/Widget.StoryApp.Switch</item>
     </style>
 
