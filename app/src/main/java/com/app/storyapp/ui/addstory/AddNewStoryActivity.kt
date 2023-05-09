@@ -6,6 +6,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Geocoder
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -26,9 +28,13 @@ import com.app.storyapp.ui.message.SuccessActivity
 import com.app.storyapp.utils.createCustomTempFile
 import com.app.storyapp.utils.rotateImage
 import com.app.storyapp.utils.uriToFile
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.util.Locale
 
 class AddNewStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddNewStoryBinding
@@ -40,6 +46,8 @@ class AddNewStoryActivity : AppCompatActivity() {
 
     private lateinit var loadingDialog: AlertDialog
     private var isLoading = false
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private val launcherIntentCamera = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -61,6 +69,7 @@ class AddNewStoryActivity : AppCompatActivity() {
             val selectedImg = result.data?.data as Uri
             selectedImg.let { uri ->
                 val myFile = uriToFile(uri, this@AddNewStoryActivity)
+                rotateImage(myFile)
                 imageFile = myFile
                 currentPhotoPath = myFile.path
                 binding.previewImageView.setImageURI(uri)
@@ -94,10 +103,16 @@ class AddNewStoryActivity : AppCompatActivity() {
             }
         }
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
         binding.apply {
             btnCamera.setOnClickListener { startTakePhoto() }
             btnGallery.setOnClickListener { startGallery() }
             buttonAdd.setOnClickListener { handleAddStory() }
+        }
+
+        binding.switchLocation.setOnCheckedChangeListener { _, isChecked ->
+            handleSwitchLocation(isChecked)
         }
 
         setupLoadingDialog()
@@ -105,7 +120,7 @@ class AddNewStoryActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             android.R.id.home -> {
                 finish()
                 return true
@@ -117,7 +132,7 @@ class AddNewStoryActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
@@ -130,6 +145,82 @@ class AddNewStoryActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            when {
+                permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
+                }
+                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
+                }
+                else -> {
+                }
+            }
+        }
+
+    private fun checkPermission(permissions: String): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            permissions
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun getMyLocation(callback: (Location?) -> Unit) {
+        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) && checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+        ) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    callback(location)
+                } else {
+                    callback(null)
+                }
+            }
+        } else {
+            requestPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+        }
+    }
+
+    private fun handleSwitchLocation(checked: Boolean) {
+        if (checked) {
+            getMyLocation { location ->
+                if (location != null) {
+                    val myLocation = LatLng(location.latitude, location.longitude)
+                    binding.tvAddress.tag = myLocation
+                    val address = getAddressName(myLocation.latitude, myLocation.longitude)
+                    binding.tvAddress.text = address
+                } else {
+                    showMessage("Location is not found try again")
+                    binding.switchLocation.isChecked = false
+                }
+            }
+        } else {
+            binding.tvAddress.tag = null
+            binding.tvAddress.text = null
+        }
+    }
+
+    private fun getAddressName(lat: Double, lon: Double): String? {
+        var addressName: String? = null
+        val geocoder = Geocoder(this@AddNewStoryActivity, Locale.getDefault())
+        try {
+            @Suppress("DEPRECATION")
+            val list = geocoder.getFromLocation(lat, lon, 1)
+            if (list != null && list.size != 0) {
+                addressName = list[0].getAddressLine(0)
+            }
+        } catch (e: Exception) {
+            Toast.makeText(this@AddNewStoryActivity, e.message.toString(), Toast.LENGTH_SHORT)
+                .show()
+        }
+        return addressName
     }
 
     private fun setupObserver() {
@@ -192,12 +283,14 @@ class AddNewStoryActivity : AppCompatActivity() {
     private fun handleAddStory() {
         val description = binding.edAddDescription.text.toString()
         val token = sharedPrefs.getUser().token.toString()
+        val myLocation = binding.tvAddress.tag as LatLng?
         val isValid: Boolean = isImageFileValid() && isDescriptionValid() && isTokenValid(token)
         isImageFileValid()
         if (isValid) {
+            showLoading(true)
             if (imageFile != null) {
                 val file = reduceFileImage(imageFile as File)
-                viewModel.addNewStory(file, description, token)
+                viewModel.addNewStory(token, file, description, myLocation?.latitude, myLocation?.longitude)
             }
         }
     }
@@ -207,10 +300,12 @@ class AddNewStoryActivity : AppCompatActivity() {
             is ResultState.Loading -> {
                 showLoading(true)
             }
+
             is ResultState.Success -> {
                 showLoading(false)
                 handleSuccess(result.data)
             }
+
             is ResultState.Error -> {
                 showLoading(false)
                 showMessage(result.error)

@@ -16,13 +16,21 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
 import java.io.File
 
-class AddNewStoryViewModel: ViewModel() {
+class AddNewStoryViewModel : ViewModel() {
     private var _addStoryRes = MutableLiveData<ResultState<AddNewStoryResponse>>()
-    val addStoryRes : LiveData<ResultState<AddNewStoryResponse>> = _addStoryRes
+    val addStoryRes: LiveData<ResultState<AddNewStoryResponse>> = _addStoryRes
 
-    fun addNewStory(storyPhoto: File?, storyDescription: String, token: String) {
+    fun addNewStory(
+        token: String,
+        storyPhoto: File?,
+        storyDescription: String,
+        latLocation: Double? = null,
+        lonLocation: Double? = null,
+    ) {
         if (storyPhoto == null) return
         val description = storyDescription.toRequestBody("text/plain".toMediaType())
+        val lat = latLocation?.toString()?.toRequestBody("text/plain".toMediaType())
+        val lon = lonLocation?.toString()?.toRequestBody("text/plain".toMediaType())
         val file = storyPhoto.asRequestBody("image/jpeg".toMediaType())
         val fileMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
             "photo",
@@ -32,7 +40,8 @@ class AddNewStoryViewModel: ViewModel() {
         _addStoryRes.value = ResultState.Loading
         viewModelScope.launch {
             try {
-                val response = ApiConfig.getApiService().addNewStory(fileMultipart, description, "Bearer $token")
+                val response = ApiConfig.getApiService()
+                    .addNewStory("Bearer $token", fileMultipart, description, lat, lon)
                 _addStoryRes.postValue(ResultState.Success(response))
             } catch (e: HttpException) {
                 val errorResponse = createErrorResponse(e)

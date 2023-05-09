@@ -21,9 +21,11 @@ interface ApiService {
     @Multipart
     @POST("stories")
     suspend fun addNewStory(
+        @Header("Authorization") authorization: String,
         @Part file: MultipartBody.Part,
         @Part("description") description: RequestBody,
-        @Header("Authorization") authorization: String
+        @Part("lat") lat: RequestBody? = null,
+        @Part("lon") lon: RequestBody? = null,
     ): AddNewStoryResponse
 
     @GET("stories")
