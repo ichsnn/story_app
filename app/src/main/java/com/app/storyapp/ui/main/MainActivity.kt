@@ -22,7 +22,9 @@ import com.app.storyapp.ui.mapstories.MapStoriesActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val viewModel by viewModels<StoryListViewModel>()
+    private val viewModel by viewModels<StoryListViewModel> {
+        StoryListViewModelFactory(this)
+    }
 
     private lateinit var sharedPrefs: SharedPrefs
 
@@ -34,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         sharedPrefs = SharedPrefs(this)
         val token = sharedPrefs.getUser().token
 
-        if(token.isNullOrBlank()) {
+        if (token.isNullOrBlank()) {
             intentMainToLogin()
         }
 
@@ -117,11 +119,13 @@ class MainActivity : AppCompatActivity() {
                     showPagingLoadingItemVisibility(true)
                     showLoadingIndicator(true)
                 }
+
                 is LoadState.Error -> {
                     val errorState = loadStates.refresh as LoadState.Error
                     if (errorState.error is UnauthorizedTokenException) {
                         handleLogout()
-                        Toast.makeText(this, errorState.error.localizedMessage, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, errorState.error.localizedMessage, Toast.LENGTH_SHORT)
+                            .show()
                     } else {
                         showPagingLoadingItemVisibility(true)
                         showLoadingIndicator(false)
@@ -129,13 +133,14 @@ class MainActivity : AppCompatActivity() {
                         setRetry { adapter.retry() }
                     }
                 }
+
                 is LoadState.NotLoading -> {
                     showPagingLoadingItemVisibility(false)
                 }
             }
         }
         binding.rvStoryList.layoutManager = LinearLayoutManager(this)
-        viewModel.getStories(token).observe(this) {
+        viewModel.getStory(token).observe(this) {
             adapter.submitData(lifecycle, it)
         }
     }

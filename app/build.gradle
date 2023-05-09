@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
+    id 'kotlin-kapt'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
@@ -65,4 +66,9 @@ dependencies {
     implementation 'com.google.maps.android:android-maps-utils:2.3.0'
     // paging 3
     implementation "androidx.paging:paging-runtime-ktx:3.1.1"
+    // room
+    implementation "androidx.room:room-ktx:2.5.1"
+    kapt 'androidx.room:room-compiler:2.5.1'
+    // room-paging
+    implementation 'androidx.room:room-paging:2.5.1'
 }
