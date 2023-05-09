@@ -150,7 +150,7 @@ class StoryAppInputText(context: Context, attrs: AttributeSet) : LinearLayout(co
         return false
     }
 
-    fun msgRequiredField() {
+    private fun msgRequiredField() {
         val message = context.getString(R.string.field_cannot_be_empty)
         setHelperText(message)
         warningHelper()
