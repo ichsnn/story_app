@@ -10,6 +10,7 @@
         <attr name="required" format="boolean" />
     </declare-styleable>
     <attr name="skeletonColor" format="color" />
+    <attr name="colorPrimary80" format="color" />
     <declare-styleable name="AppWidgetAttrs">
         <attr name="appWidgetPadding" format="dimension" />
         <attr name="appWidgetInnerRadius" format="dimension" />

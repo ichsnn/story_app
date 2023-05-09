@@ -13,6 +13,18 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="skeletonColor">@color/light_gray_1</item>
+        <item name="colorPrimary80">@color/purple_500_80</item>
+
+        <item name="switchStyle">@style/Widget.StoryApp.Switch</item>
+    </style>
+
+    <style name="Widget.StoryApp.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.StoryApp.Switch</item>
+    </style>
+
+    <style name="ThemeOverlay.StoryApp.Switch" parent="">
+        <item name="colorOnSurface">@color/purple_500</item>
+        <item name="colorSecondary">@color/purple_500_80</item>
     </style>
 
     <style name="Theme.StoryApp.AppWidgetContainerParent" parent="@android:style/Theme.DeviceDefault">
@@ -29,4 +41,5 @@
         <!-- Apply padding to avoid the content of the widget colliding with the rounded corners -->
         <item name="appWidgetPadding">16dp</item>
     </style>
+
 </resources>

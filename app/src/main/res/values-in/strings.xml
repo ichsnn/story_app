@@ -39,4 +39,7 @@
     <string name="address">alamat</string>
     <string name="retry">coba lagi</string>
     <string name="timeout">Waktu habis</string>
+    <string name="offline">Offline</string>
+    <string name="reload">Muat Ulang</string>
+    <string name="location">Lokasi</string>
 </resources>
