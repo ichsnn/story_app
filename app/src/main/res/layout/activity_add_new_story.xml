@@ -89,7 +89,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="top"
                 android:inputType="textMultiLine"
-                android:lines="5" />
+                android:lines="5"
+                tools:ignore="TextContrastCheck" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -102,7 +103,8 @@
             android:text="@string/location"
             app:layout_constraintStart_toStartOf="@+id/input_layout"
             app:layout_constraintTop_toBottomOf="@+id/input_layout"
-            app:switchPadding="2dp" />
+            app:switchPadding="2dp"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <TextView
             android:id="@+id/tv_address"
